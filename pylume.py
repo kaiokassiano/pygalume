@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-#   You can make any modifications to this code.
 #   Please read API Terms at api.vagalume.com.br/terms/
 
 #   Copyright Vagalume Midia Ltda. All rights reserved.
