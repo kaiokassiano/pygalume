@@ -83,8 +83,8 @@ def window(letra, data):
 	canvas = Canvas(
 		frame,
 		bg = '#DCDCDC',
-		width=600,
-		height=600,
+		width = 600,
+		height = 600,
 		scrollregion = (0,0,500,4000,)
 		)
 
