@@ -85,7 +85,7 @@ def window(letra, data):
 		bg = '#DCDCDC',
 		width = 600,
 		height = 600,
-		scrollregion = (0,0,500,4000,)
+		scrollregion = (0,0,500,letra.count('\n') * 16,)
 		)
 
 	texto = letra
