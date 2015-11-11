@@ -89,7 +89,7 @@ while 1:
 			height = 600,
 			scrollregion = (0,0,500,letra.count('\n') * 16)
 			)
- 
+
 		texto = letra
 
 		vbar = Scrollbar(frame, orient = VERTICAL)
