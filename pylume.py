@@ -37,75 +37,90 @@ print "---Buscador de letras do Vagalume---"
 print "Data e hora da requisicao: %s/%s/%s %s:%s\n" % (now.day, now.month, now.year, now.hour, now.minute)
 
 # Requisição do artista/música
-while 1:
-	def main():
-		while 1:
+def main():
+	while 1:
+		try:
+			# Entre com o nome do artista e da música
+			step = '%20'
+			artist = raw_input("\nArtist name? ").split()
+			song = raw_input("Song Name? ").split()
+			
 			try:
-				# Entre com o nome do artista e da música
-				step = '%20'
-				artist = raw_input("\nArtist name? ").split()
-				song = raw_input("Song Name? ").split()
-				try:
-					# Faz a requisição à API do Vagalume, usando o nome do artista e da música, através do urllib2
-					response = urllib2.urlopen("http://api.vagalume.com.br/search.php?art=" + step.join(artist) + "&mus=" + step.join(song))
-					data = json.load(response)
-					# Pergunta ao usuário se ele deseja visualizar a música no idioma original, ou traduzida para pt-br
-					version = raw_input("1 to visualize original lyrics, 2 to portuguese lyrics: ")
-					if version == '1':
-						# Retorna, na janela do Tkinter, a letra original da música. Caso a letra original já seja em Português, apenas retorna a letra
+				# Faz a requisição à API do Vagalume, usando o nome do artista e da música, através do urllib2
+				response = urllib2.urlopen("http://api.vagalume.com.br/search.php?art=" + step.join(artist) + "&mus=" + step.join(song))
+				data = json.load(response)
+				
+				# Ocorrências para músicas que não possuem tradução
+				if 'translate' not in data["mus"][0]:
+					
+					if data["mus"][0]["lang"] == 1:
+						raw_input("\nMusic already in portuguese\nPress Enter to continue and show portuguese lyrics...")
 						letra = data["mus"][0]["text"]
 						window(letra, data)
 						break
-					elif version == '2':
-						# Retorna, na janela do Tkinter, a letra traduzida da música
-						letra = data["mus"][0]["translate"][0]["text"]
+					elif data["mus"][0]["lang"] == 2:
+						raw_input("\nThis music ain't got portuguese version\nPress Enter to continue and show original lyrics...")
+						letra = data["mus"][0]["text"]
 						window(letra, data)
 						break
-					else:
-						# Caso o usuário digite não digite uma opção válida para fins de idioma da letra...
-						print ("Invalid entry. Try again!\n\n")
-				except urllib2.URLError:
-					# Caso o usuário não possua conexão com a internet...
-					print ("\nSorry, no internet connection?\n")
+				
+				# Ocorrências para músicas que possuem tradução
+				elif 'translate' in data["mus"][0]:
+					
+					while 1:
+						version = raw_input("\n1 to show original lyrics, 2 to show portuguese lyrics: ")
+						
+						if version == "1":
+							letra = data["mus"][0]["text"]
+							window(letra, data)
+							break
+						
+						elif version == "2":
+							letra = data["mus"][0]["translate"][0]["text"]
+							window(letra, data)
+							break
+						
+						else:
+							print "Invalid entry. Try again!\n\n"
+					
 					break
-			except KeyError:
-				# Caso haja erros de digitação nas entradas do nome do artista e da música
-				if version == '2':
-					print ("Something went wrong.\nMake sure that you're not selecting '2' for a portuguese song, or if this music ain't got a portuguese version.\nCheck the artist and the song name, and then try again...\n")
-				else:
-					print "Something went wrong. Try again...\n"
+			
+			# Caso o usuário não possua conexão com a internet...
+			except urllib2.URLError:
+				print ("\nSorry, no internet connection?\n")
+				break
+		
+		# Caso hajam erros de digitação no nome do artista e da música
+		except KeyError:
+				print "Something went wrong. Check artist and song name, and try again...\n"
 
-	# Criação da janela separada, que exibe a música
-	def window(letra, data):
-		app = Tk()
-		app.title("%s" % (data["mus"][0]["name"]))
-
-		frame = Frame(app, width = 1366,	 height = 768)
-		frame.grid(row = 0, column = 0)
-		canvas = Canvas(
-			frame,
-			bg = '#DCDCDC',
-			width = 600,
-			height = 600,
-			scrollregion = (0,0,500,letra.count('\n') * 16)
-			)
-
-		texto = letra
-
-		vbar = Scrollbar(frame, orient = VERTICAL)
-		vbar.pack(side = RIGHT, fill = Y)
-		vbar.config(command = canvas.yview)
-		canvas.config(yscrollcommand = vbar.set)
-		canvas.create_text((250, 20), text = texto, anchor = 'n')
-		canvas.pack()
+# Criação da janela separada, que exibe a música
+def window(letra, data):
+	app = Tk()
+	app.title("%s" % (data["mus"][0]["name"]))
 	
-		app.mainloop()
+	frame = Frame(app, width = 1366,	 height = 768)
+	frame.grid(row = 0, column = 0)
+	canvas = Canvas(
+		frame,
+		bg = '#DCDCDC',
+		width = 600,
+		height = 600,
+		scrollregion = (0,0,500,letra.count('\n') * 16)
+		)
 	
-	if __name__ == "__main__":
+	texto = letra
+	
+	vbar = Scrollbar(frame, orient = VERTICAL)
+	vbar.pack(side = RIGHT, fill = Y)
+	vbar.config(command = canvas.yview)
+	canvas.config(yscrollcommand = vbar.set)
+	canvas.create_text((250, 20), text = texto, anchor = 'n')
+	canvas.pack()
+	
+	app.mainloop()
+
+if __name__ == "__main__":
 		main()
-
-	entrada = raw_input("\nDeseja buscar mais alguma música? Digite 1 para sim, ou 2 para não\n")
-	if entrada == '2':
-		break
 
 print ('\n\n--End of file--\n')
