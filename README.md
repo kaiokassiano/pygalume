@@ -1,3 +1,3 @@
 # pylume
 
-A simple python command line utility using the Vagalume API to search song lyrics, and show them through Tkinter GUI.
+Um simples buscador de letras do Vagalume, no qual o usuário usa nome do artista e música, e a letra é mostrada usando a GUI Tkinter.
