@@ -33,8 +33,8 @@ import json
 import urllib2
 
 now = datetime.now()
-print "---Buscador de letras do Vagalume---"
-print "Data e hora da requisicao: %s/%s/%s %s:%s\n" % (now.day, now.month, now.year, now.hour, now.minute)
+print "\n---Buscador de letras do Vagalume---"
+print "Data e hora da requisicao: %s/%s/%s %s:%s" % (now.day, now.month, now.year, now.hour, now.minute)
 
 # Requisição do artista/música
 def main():
