@@ -6,4 +6,4 @@ Um simples buscador de letras de músicas feito em Python 2.7, e que usa a API d
 
 Pylume não foi testado/executado em Python 3x. Pylume necessita do módulo Tkinter para funcionar corretamente.
 Caso o módulo não seja encontrado ao executar o Pylume, você pode encontrá-lo <a href="http://www.tkdocs.com/tutorial/install.html">aqui</a>.<br>
-Se você usa Ubuntu, você pode utilizar o comando <code>sudo apt-get install python-tk</code>
+Se você usa Ubuntu, você pode instalar o Tkinter com o comando <code>sudo apt-get install python-tk</code>
